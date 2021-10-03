@@ -75,6 +75,11 @@ class Sync {
 
     async sync(context, data, expFilename, toLocal) {
         const sGit = this.getSimpleGit(data.workspace);
+        if (await Settings.get('initialPushDone', context, data.workspace._id) === false) {
+            await this.doFirstCommit(context, data, sGit, expFilename);
+            Settings.set(context, data.workspace._id, 'initialPushDone', true);
+            return;
+        }
         let conflictError = false;
         try {
             await sGit.add(expFilename);
@@ -126,6 +131,20 @@ class Sync {
         const workDirectory = Workspace.getWorkingDir(workspace);
         const repoUrl = await this.getRepoUrl(context, workspace._id, false);
         await sGit.clone(repoUrl, workDirectory);
+    }
+
+    async doFirstCommit(context, data, sGit, expFilename) {
+        try {
+            await sGit.add(expFilename);
+            await sGit.commit('Commit');
+            sGit.push(['-f']);
+        } catch(error) {
+            console.error(error);
+            context.app.alert('Error!', 'Could not push to server, more information can be found in console!');
+            return;
+        }
+
+        context.app.alert('Success!', 'Pushed to server.');
     }
 }
 
