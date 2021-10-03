@@ -1,0 +1,29 @@
+{
+  "name": "insomnia-plugin-git-sync",
+  "version": "0.0.1",
+  "author": "Sebastian Dernbach <sebastian.dernbach@ionos.com>",
+  "description": "Insomnia GIT Sync",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:sebastiande/insomnia-plugin-git-sync.git"
+  },
+  "main": "index.js",
+  "insomnia": {
+    "name": "GIT Sync",
+    "description": "Sync Workspaces with GIT Repository"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "dependencies": {
+    "simple-git": "^2.5.0"
+  },
+  "devDependencies": {
+    "np": "^7.5.0"
+  },
+  "files": [
+    "index.js",
+    "package.json"
+  ]
+}
