@@ -24,6 +24,9 @@
   },
   "files": [
     "index.js",
+    "Settings.js",
+    "Sync.js",
+    "Workspace.js",
     "package.json"
   ]
 }
