@@ -73,9 +73,18 @@ class Sync {
         return true;
     }
 
+    async isAlreadySyncedToLocalOneTime(context, data) {
+        return Settings.get('initialPullDone', context, data.workspace._id);
+    }
+
     async sync(context, data, expFilename, toLocal) {
         const sGit = this.getSimpleGit(data.workspace);
-        if (await Settings.get('initialPushDone', context, data.workspace._id) === false) {
+        if (await Settings.get('initialPullDone', context, data.workspace._id) === false && toLocal) {
+            await this.doFirstPull(context, data, sGit);
+            Settings.set(context, data.workspace._id, 'initialPullDone', true);
+            return;
+        }
+        if (await Settings.get('initialPushDone', context, data.workspace._id) === false && !toLocal) {
             await this.doFirstCommit(context, data, sGit, expFilename);
             Settings.set(context, data.workspace._id, 'initialPushDone', true);
             return;
@@ -145,6 +154,18 @@ class Sync {
         }
 
         context.app.alert('Success!', 'Pushed to server.');
+    }
+
+    async doFirstPull(context, data, sGit) {
+        try {
+            await sGit.pull(['--no-rebase']);
+        } catch(error) {
+            console.error(error);
+            context.app.alert('Error!', 'Could not pull from server, more information can be found in console!');
+            return;
+        }
+
+        context.app.alert('Success!', 'Updated from server.');
     }
 }
 

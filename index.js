@@ -18,13 +18,17 @@ module.exports.workspaceActions = [
                 return;
             }
 
-            // do export to see if there are local changes
-            const expFilename = await Workspace.exportProject(context, data);
-            if (!expFilename) {
-                return;
+            let expFilename = false;
+            if (await Sync.isAlreadySyncedToLocalOneTime(context, data)) {
+                // do export to see if there are local changes
+                expFilename = await Workspace.exportProject(context, data);
+                if (!expFilename) {
+                    return;
+                }
             }
 
             await Sync.sync(context, data, expFilename, true);
+            Workspace.importProject(context, data);
         },
     },
     {

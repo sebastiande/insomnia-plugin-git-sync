@@ -10,6 +10,10 @@ class Workspace {
         }
 
         fs.readFile(impFilename, "utf8", function (err, fileContent) {
+
+            // modify data to match current workspace id
+            fileContent = fileContent.replaceAll('git_sync_workspace_id', data.workspace._id);
+
             context.data.import.raw(fileContent, {
                 workspaceId: data.workspace._id,
             });
@@ -19,13 +23,14 @@ class Workspace {
     }
 
     async exportProject(context, data) {
-        const exp = await context.data.export.insomnia({
+        let exp = await context.data.export.insomnia({
             includePrivate: false,
             format: 'json',
             workspace: data.workspace,
         });
 
         // modify data to not have that much conflicts
+        exp = exp.replaceAll(data.workspace._id, 'git_sync_workspace_id');
         const expObj = JSON.parse(exp);
         expObj.__export_date = '2021-10-03T17:27:43.046Z';
 
