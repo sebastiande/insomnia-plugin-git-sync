@@ -81,12 +81,10 @@ class Sync {
         const sGit = this.getSimpleGit(data.workspace);
         if (await Settings.get('initialPullDone', context, data.workspace._id) === false && toLocal) {
             await this.doFirstPull(context, data, sGit);
-            Settings.set(context, data.workspace._id, 'initialPullDone', true);
             return;
         }
         if (await Settings.get('initialPushDone', context, data.workspace._id) === false && !toLocal) {
             await this.doFirstCommit(context, data, sGit, expFilename);
-            Settings.set(context, data.workspace._id, 'initialPushDone', true);
             return;
         }
         let conflictError = false;
@@ -153,6 +151,7 @@ class Sync {
             return;
         }
 
+        Settings.set(context, data.workspace._id, 'initialPushDone', true);
         context.app.alert('Success!', 'Pushed to server.');
     }
 
@@ -165,6 +164,7 @@ class Sync {
             return;
         }
 
+        Settings.set(context, data.workspace._id, 'initialPullDone', true);
         context.app.alert('Success!', 'Updated from server.');
     }
 }
