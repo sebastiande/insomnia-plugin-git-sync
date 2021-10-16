@@ -1,6 +1,6 @@
 {
   "name": "insomnia-plugin-git-sync",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Sebastian Dernbach <sebastian.dernbach@ionos.com>",
   "description": "Insomnia GIT Sync",
   "license": "MIT",
