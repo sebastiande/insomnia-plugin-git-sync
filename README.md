@@ -1,10 +1,10 @@
 # Git sync for Insomnia
 
 This plugin can sync service calls of a project to git and pull from it.
-Currently the plugin does not support branches, it only used the default branch.
-Conflicts are only solved on overwrite basis.
+Currently, the plugin does not support branches, it only uses the default branch.
+Conflicts get solved on overwrite basis only.
 You can decide if you want to send your local version to server, or overwrite your local changes with the current server version.
-Therefore it is a good idea to always pull before doing changes.
+Therefore, it is a good idea to always pull before doing changes.
 
 ## Insomnia Documentation:
 * https://docs.insomnia.rest/insomnia/introduction-to-plugins

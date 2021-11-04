@@ -4,16 +4,14 @@ class Workspace {
     importProject(context, data) {
         const impFilename = this.getWorkspaceFile(data);
         if (!fs.existsSync(impFilename)) {
+            // noinspection JSUnresolvedVariable,JSCheckFunctionSignatures
             context.app.alert('Error importing',
                 'Seems there is no configuration within your repository that can be read! Push first!');
             return false;
         }
 
         fs.readFile(impFilename, "utf8", function (err, fileContent) {
-
-            // modify data to match current workspace id
-            fileContent = fileContent.replaceAll('git_sync_workspace_id', data.workspace._id);
-
+            // noinspection JSUnresolvedVariable,JSCheckFunctionSignatures
             context.data.import.raw(fileContent, {
                 workspaceId: data.workspace._id,
             });
@@ -23,16 +21,29 @@ class Workspace {
     }
 
     async exportProject(context, data) {
+        // noinspection JSUnresolvedVariable,JSCheckFunctionSignatures,JSUnresolvedFunction
         let exp = await context.data.export.insomnia({
             includePrivate: false,
             format: 'json',
             workspace: data.workspace,
         });
 
-        // modify data to not have that much conflicts
-        exp = exp.replaceAll(data.workspace._id, 'git_sync_workspace_id');
+        // modify data to not have that much conflicts and fix environment imports
+        exp = exp.replaceAll(data.workspace._id, '__WORKSPACE_ID__');
         const expObj = JSON.parse(exp);
         expObj.__export_date = '2021-10-03T17:27:43.046Z';
+        for (let i = 0; i < expObj.resources.length; i++) {
+            if (expObj.resources[i]._type !== 'environment') {
+                continue;
+            }
+            if (expObj.resources[i].name === 'Base Environment') {
+                expObj.resources[i]._id = '__BASE_ENVIRONMENT_ID__';
+                continue;
+            }
+            if (expObj.resources[i].parentId.startsWith('env_')) {
+                expObj.resources[i].parentId = '__BASE_ENVIRONMENT_ID__';
+            }
+        }
 
         const expFilename = this.getWorkspaceFile(data);
         fs.writeFileSync(expFilename, JSON.stringify(expObj));
@@ -61,7 +72,7 @@ class Workspace {
     }
 
     getWorkspaceFile(data) {
-        return this.getWorkingDir(data.workspace) + '/' + this.sanitizeString(data.workspace.name) + '.json';
+        return this.getWorkingDir(data.workspace) + '/workspace.json';
     }
 }
 

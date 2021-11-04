@@ -1,6 +1,7 @@
-const fs = require('fs');
 const Workspace = require('./Workspace');
 const Sync = require('./Sync');
+const SyncToServer = require('./SyncToServer');
+const SyncToLocal = require('./SyncToLocal');
 
 module.exports.workspaceActions = [
     {
@@ -18,16 +19,7 @@ module.exports.workspaceActions = [
                 return;
             }
 
-            let expFilename = false;
-            if (await Sync.isAlreadySyncedToLocalOneTime(context, data)) {
-                // do export to see if there are local changes
-                expFilename = await Workspace.exportProject(context, data);
-                if (!expFilename) {
-                    return;
-                }
-            }
-
-            await Sync.sync(context, data, expFilename, true);
+            await SyncToLocal.pull(context, data);
             Workspace.importProject(context, data);
         },
     },
@@ -43,7 +35,7 @@ module.exports.workspaceActions = [
                 return;
             }
 
-            await Sync.sync(context, data, expFilename, false);
+            await SyncToServer.push(context, data, expFilename);
         },
     }
 ];
