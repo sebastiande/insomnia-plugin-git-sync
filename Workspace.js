@@ -36,7 +36,7 @@ class Workspace {
             if (expObj.resources[i]._type !== 'environment') {
                 continue;
             }
-            if (expObj.resources[i].name === 'Base Environment') {
+            if (expObj.resources[i].parentId === '__WORKSPACE_ID__') {
                 expObj.resources[i]._id = '__BASE_ENVIRONMENT_ID__';
                 continue;
             }
