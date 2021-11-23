@@ -32,6 +32,7 @@ class Workspace {
         exp = exp.replaceAll(data.workspace._id, '__WORKSPACE_ID__');
         const expObj = JSON.parse(exp);
         expObj.__export_date = '2021-10-03T17:27:43.046Z';
+        expObj.__export_source = 'insomnia.desktop.app:v2021.6.0';
         for (let i = 0; i < expObj.resources.length; i++) {
             expObj.resources[i].modified = '1637671845661';
             if (expObj.resources[i]._type !== 'environment') {
