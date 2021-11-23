@@ -62,8 +62,8 @@ class Sync {
 
         try {
             const sGit = this.getSimpleGit(data.workspace);
-            // noinspection JSUnresolvedVariable
-            const isGit = await sGit.checkIsRepo(CheckRepoActions.IS_REPO_ROOT);
+            // noinspection JSUnresolvedVariable,JSCheckFunctionSignatures
+            const isGit = await sGit.checkIsRepo('root'); // using the enum does not work on linux
             if (!isGit) {
                 await this.initialiseRepo(sGit, context, data.workspace);
             }

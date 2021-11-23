@@ -33,6 +33,7 @@ class Workspace {
         const expObj = JSON.parse(exp);
         expObj.__export_date = '2021-10-03T17:27:43.046Z';
         for (let i = 0; i < expObj.resources.length; i++) {
+            expObj.resources[i].modified = '1637671845661';
             if (expObj.resources[i]._type !== 'environment') {
                 continue;
             }
