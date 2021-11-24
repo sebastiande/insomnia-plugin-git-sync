@@ -1,4 +1,3 @@
-const CheckRepoActions = require('simple-git/src/lib/tasks/check-is-repo');
 const simpleGit = require('simple-git');
 
 const Workspace = require('./Workspace');

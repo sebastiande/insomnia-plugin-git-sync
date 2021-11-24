@@ -1,5 +1,3 @@
-const ResetMode = require('simple-git/src/lib/tasks/reset');
-
 const Workspace = require('./Workspace');
 const Settings = require('./Settings');
 const Sync = require('./Sync');
@@ -41,7 +39,7 @@ class SyncToLocal {
         if (confirm('You have local changes, do you want to overwrite your local changes with the server version?')) {
             const branchName = await sGit.revparse(['--abbrev-ref', 'HEAD']);
             // noinspection JSUnresolvedVariable
-            await sGit.reset(ResetMode.HARD, ['origin/' + branchName], () => {
+            await sGit.reset('hard', ['origin/' + branchName], () => {
                 Workspace.importProject(context, data);
             });
             return false;
