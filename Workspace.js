@@ -33,19 +33,29 @@ class Workspace {
         const expObj = JSON.parse(exp);
         expObj.__export_date = '2021-10-03T17:27:43.046Z';
         expObj.__export_source = 'insomnia.desktop.app:v2021.6.0';
+        let tmpArr = [];
         for (let i = 0; i < expObj.resources.length; i++) {
+            if (expObj.resources[i]._type === 'api_spec'
+                || expObj.resources[i]._type === 'cookie_jar') {
+                // remove this as it makes many merge conflicts
+                continue;
+            }
             expObj.resources[i].modified = '1637671845661';
             if (expObj.resources[i]._type !== 'environment') {
+                tmpArr.push(expObj.resources[i]);
                 continue;
             }
             if (expObj.resources[i].parentId === '__WORKSPACE_ID__') {
                 expObj.resources[i]._id = '__BASE_ENVIRONMENT_ID__';
+                tmpArr.push(expObj.resources[i]);
                 continue;
             }
             if (expObj.resources[i].parentId.startsWith('env_')) {
                 expObj.resources[i].parentId = '__BASE_ENVIRONMENT_ID__';
             }
+            tmpArr.push(expObj.resources[i]);
         }
+        expObj.resources = tmpArr;
 
         const expFilename = this.getWorkspaceFile(data);
         fs.writeFileSync(expFilename, JSON.stringify(expObj));
