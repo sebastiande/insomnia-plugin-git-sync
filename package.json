@@ -17,10 +17,11 @@
     "registry": "https://registry.npmjs.org"
   },
   "dependencies": {
-    "simple-git": "^2.47.0"
+    "simple-git": "^2.47.0",
+    "command-exists": "^1.2.9"
   },
   "devDependencies": {
-    "np": "^7.5.0"
+    "np": "^7.6.0"
   },
   "files": [
     "index.js",

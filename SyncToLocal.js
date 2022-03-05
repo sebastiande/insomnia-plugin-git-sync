@@ -4,7 +4,7 @@ const Sync = require('./Sync');
 
 class SyncToLocal {
     async pull(context, data) {
-        const sGit = Sync.getSimpleGit(data.workspace);
+        const sGit = Sync.getSimpleGit(context, data.workspace);
         if (await this.localChangesNotHandled(sGit, context, data)) {
             return;
         }

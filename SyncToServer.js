@@ -2,7 +2,7 @@ const Sync = require('./Sync');
 
 class SyncToServer {
     async push(context, data, expFilename) {
-        const sGit = Sync.getSimpleGit(data.workspace);
+        const sGit = Sync.getSimpleGit(context, data.workspace);
         try {
             await sGit.add(expFilename);
             await sGit.commit('Commit');

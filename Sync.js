@@ -1,4 +1,5 @@
 const simpleGit = require('simple-git');
+const commandExistsSync = require('command-exists').sync;
 
 const Workspace = require('./Workspace');
 const Settings = require('./Settings');
@@ -60,7 +61,7 @@ class Sync {
         }
 
         try {
-            const sGit = this.getSimpleGit(data.workspace);
+            const sGit = this.getSimpleGit(context, data.workspace);
             // noinspection JSUnresolvedVariable,JSCheckFunctionSignatures
             const isGit = await sGit.checkIsRepo('root'); // using the enum does not work on linux
             if (!isGit) {
@@ -79,9 +80,16 @@ class Sync {
     }
 
     /* helper methods */
-    getSimpleGit(scope) {
+    getSimpleGit(context, scope) {
         const folder = Workspace.getWorkingDir(scope);
         if (folder === false) {
+            return false;
+        }
+        if (!commandExistsSync('git')) {
+            // noinspection JSUnresolvedVariable,JSCheckFunctionSignatures
+            context.app.alert('Error doing action',
+                'Seems git is not installed. ' +
+                'Git needs to be installed and reachable via command git on the console!');
             return false;
         }
         // noinspection JSCheckFunctionSignatures
