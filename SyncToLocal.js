@@ -60,7 +60,7 @@ class SyncToLocal {
         if (confirm('There are conflicts, do you want to overwrite your local changes with the server version?')) {
             const branchName = await sGit.revparse(['--abbrev-ref', 'HEAD']);
             // noinspection JSUnresolvedVariable
-            await sGit.reset(ResetMode.HARD,['origin/' + branchName], () => {
+            await sGit.reset('hard', ['origin/' + branchName], () => {
                 if (Workspace.importProject(context, data)) {
                     // noinspection JSUnresolvedVariable,JSCheckFunctionSignatures
                     context.app.alert('Finished', 'Project got reset to server version.');
