@@ -58,7 +58,7 @@ class Workspace {
         expObj.resources = tmpArr;
 
         const expFilename = this.getWorkspaceFile(data);
-        fs.writeFileSync(expFilename, JSON.stringify(expObj));
+        fs.writeFileSync(expFilename, JSON.stringify(expObj, null, 2));
         return expFilename;
     }
 
