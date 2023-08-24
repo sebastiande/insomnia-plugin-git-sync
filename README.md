@@ -1,3 +1,5 @@
+# ARCHIVED: as the export functionality of Insomnia is broken since some versions (08/2023) this plugin is not further developed and archived. Use the design collections with integrated GIT Sync instead
+
 # Git sync for Insomnia
 
 This plugin can sync service calls of a project to git and pull from it.
